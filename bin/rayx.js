@@ -27,11 +27,19 @@ const options = {
             gulp.src(`${reactProjectPath}/**`)
                 .pipe(replace('__name__', projectName))
                 .pipe(replace('__description__', projectDisc))
+                .pipe(replace('__pageTitle__', projectDisc))
                 .pipe(gulp.dest(`${cwdPath}`));
 
             // 复制隐藏文件
-            gulp.src([`${reactProjectPath}/.babelrc`, `${reactProjectPath}/.gitignore`])
+            gulp.src(`${reactProjectPath}/.babelrc`)
                 .pipe(gulp.dest(`${cwdPath}`));
+
+            // 创建.gitignore
+            const gitignoreText = fs.readFileSync(`${reactProjectPath}/gitignore.txt`);
+            fs.writeFileSync('.gitignore', gitignoreText, 'utf8');
+            setTimeout(() => {
+                fs.unlinkSync(`${cwdPath}/gitignore.txt`);
+            }, 1000);
         }
     },
     "-v": "--version",

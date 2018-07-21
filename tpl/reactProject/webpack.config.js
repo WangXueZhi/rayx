@@ -1,6 +1,6 @@
 let webpackCfg = require("webpack-config");
 let pkg = require('./package.json');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 let path = require('path');
 
 // 路径
@@ -13,6 +13,12 @@ let antdModify = require(path.join(srcPath, 'styles', 'antdModify'));
 
 // 环境域名
 let __URL_HOST__ = process.env.GULP_ENV === "prod" ? "" : "";
+
+// mini-css-extract-plugin 配置
+let cssExtractLoader = pkg.assetExtractCss ? MiniCssExtractPlugin.loader : {
+  loader: 'style-loader'
+};
+
 
 let config = webpackCfg.getConfig({
   // 版本号，默认1.0.0
@@ -62,22 +68,26 @@ let config = webpackCfg.getConfig({
         componentPath,
         entryPath
       ],
-      use: ExtractTextPlugin.extract({
-        fallback: {
-          loader: 'style-loader'
-        },
-        use: [
-          {
-            loader: 'css-loader?modules&localIdentName=[name]-[local]-[hash:base64:5]&autoprefixer=false'
-          },
-          {
-            loader: 'postcss-loader'
-          },
-          {
-            loader: 'less-loader',
+      use: [
+        cssExtractLoader,
+        {
+          loader: 'css-loader',
+          options: {
+            importLoaders: 2,
+            modules: true,
+            localIdentName: '[name]-[local]-[hash:base64:5]'
           }
-        ]
-      })
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            config: {
+              path: path.resolve(__dirname, './postcss.config.js')
+            }
+          },
+        },
+        'less-loader'
+      ]
     },
     {
       // 非 antd-mobile 正常处理
@@ -90,22 +100,12 @@ let config = webpackCfg.getConfig({
         componentPath,
         entryPath
       ],
-      use: ExtractTextPlugin.extract({
-        fallback: {
-          loader: 'style-loader'
-        },
-        use: [
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'postcss-loader'
-          },
-          {
-            loader: 'less-loader',
-          }
-        ]
-      })
+      use: [
+        cssExtractLoader,
+        'css-loader',
+        'postcss-loader',
+        'less-loader'
+      ]
     },
     {
       // 覆盖 antd-mobile 变量
@@ -113,27 +113,21 @@ let config = webpackCfg.getConfig({
         return (/\.less$/).test(absPath)
           && antdModify.isAntdPath(absPath);
       },
-      use: ExtractTextPlugin.extract({
-        fallback: {
-          loader: 'style-loader'
-        },
-        use: [
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'postcss-loader'
-          },
-          {
-            loader: `less-loader?${JSON.stringify(antdModify.lessQuery)}`,
+      use: [
+        cssExtractLoader,
+        'css-loader',
+        'postcss-loader',
+        {
+          loader: 'less-loader',
+          options: {
+            modifyVars: antdModify.lessQuery.modifyVars
           }
-        ]
-      })
+        }
+      ]
     },
   ],
   // script加跨域头
   alterAssetTags: false
 })
-
 // 导出配置
 module.exports = config;

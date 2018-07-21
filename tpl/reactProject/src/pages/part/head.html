@@ -15,9 +15,6 @@ ${__wpdf_define_debug__ ? `
         var search = window.location.search;
         if(search.indexOf(keyword) != -1) {
           document.write('<sc' + 'ript src="${require('!!file-loader!vconsole')}" crossorigin="anonymous"></sc' + 'ript>');
-          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole-elements')}" crossorigin="anonymous"></sc' + 'ript>');
-          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole-resources')}" crossorigin="anonymous"></sc' + 'ript>');
-          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole-sources')}" crossorigin="anonymous"></sc' + 'ript>');
         }
       })();
     </script>
