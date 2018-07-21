@@ -1,0 +1,36 @@
+<!-- head start -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="format-detection" content="telephone=no, email=no, adress=no" />
+
+<meta name="keywords" content="" />
+<meta name="description" content=""
+/>
+
+${__wpdf_define_debug__ ? `
+    <script>
+      // 加载调试面板
+      (function() {
+        var keyword = 'vConsole';
+        var search = window.location.search;
+        if(search.indexOf(keyword) != -1) {
+          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole')}" crossorigin="anonymous"></sc' + 'ript>');
+          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole-elements')}" crossorigin="anonymous"></sc' + 'ript>');
+          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole-resources')}" crossorigin="anonymous"></sc' + 'ript>');
+          document.write('<sc' + 'ript src="${require('!!file-loader!vconsole-sources')}" crossorigin="anonymous"></sc' + 'ript>');
+        }
+      })();
+    </script>
+    ` : ''}
+<script>
+  // 计算缩放比例 
+  (function () {
+    var phoneScale = parseInt(window.screen.width) / 750;
+    document.write('<meta name="viewport" content="width=750, minimum-scale=' + phoneScale + ', maximum-scale=' +
+      phoneScale + ', user-scalable=no">');
+  })();
+</script>
+<script type='text/javascript'>
+
+</script>
+<!-- head end -->

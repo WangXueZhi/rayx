@@ -1,0 +1,34 @@
+{
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "chrome": 52,
+                    "browsers": [
+                        "last 2 versions",
+                        "safari 7"
+                    ]
+                }
+            }
+        ],
+        "stage-0",
+        "react"
+    ],
+    "plugins": [
+        [
+            "transform-runtime",
+            {
+                "helpers": false
+            }
+        ],
+        [
+            "import",
+            {
+                "libraryName": "antd-mobile",
+                "libraryDirectory": "lib",
+                "style": true
+            }
+        ]
+    ]
+}

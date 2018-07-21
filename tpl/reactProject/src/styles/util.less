@@ -1,0 +1,33 @@
+/**  
+ * --------------------------------
+ * Mixins
+ * --------------------------------
+ */
+
+// 清除浮动
+.clear() {
+  zoom: 1;
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+// 单行超出截断
+.ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行超出截断
+.ellipsis(@line) when (isnumber(@line)) and (@line > 1) {
+  overflow: hidden;
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+}

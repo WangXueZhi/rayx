@@ -1,0 +1,143 @@
+/* 覆盖 Ant Design Mobile 的默认样式 */
+
+
+/**
+ * --------------------------------
+ * 注意：
+ * 尽可能在使用外部组件的地方，就近覆盖样式。对于覆盖频率很高的组件，可在独立的 less 文件中定义 Mixins 代码。  
+ * 在组件调用处使用 [Namespaces](http://lesscss.org/features/#mixins-feature-namespaces) 方式引用。  
+ * --------------------------------
+ */
+
+// 颜色
+@color-primary: #44b2f7;
+// 背景色
+@bgcolor-gradient-primary: linear-gradient(to right, #41c9fb, #3db1fa);
+.antdHack() {
+  /* 按钮样式 */
+  .button() {
+    :global {
+      // 圆角
+      @button-radius: 50px;
+      //默认样式
+      .am-button {
+        height: 100px;
+        color: @color-primary;
+        border-top-left-radius: @button-radius;
+        border-top-right-radius: @button-radius;
+        border-bottom-left-radius: @button-radius;
+        border-bottom-right-radius: @button-radius;
+      }
+      .am-button:after {
+        border-top-left-radius: 97px;
+        border-top-right-radius: 97px;
+        border-bottom-left-radius: 97px;
+        border-bottom-right-radius: 97px;
+        border: 0;
+      }
+      .am-button.am-button-touchFeedback {
+        background-color: #e8faff;
+      }
+      .am-button.am-button-active:not(.am-button-disabled) {
+        background-color: #e8faff;
+      }
+      .am-button-disabled {
+        color: #cccccc;
+        background-color: #ffffff;
+      }
+      .am-button-disabled:after {
+        border: 1px solid #dfdfdf;
+      }
+      //primary样式
+      .am-button-primary {
+        background: @bgcolor-gradient-primary;
+        color: #ffffff;
+      }
+      .am-button-primary:after {
+        border: 1px solid @color-primary;
+      }
+      .am-button-primary.am-button-touchFeedback {
+        background-color: #3ba8ed;
+      }
+      .am-button-primary.am-button-disabled {
+        opacity: .5;
+      }
+      .am-button-primary.am-button-disabled:after {
+        border: 0
+      }
+      .am-button-primary.am-button-active:not(.am-button-disabled) {
+        background-color: #3ba8ed;
+      }
+    }
+  }
+  /* 弹窗样式 */
+  .modal {
+    :global {
+      .am-modal-mask {
+        background-color: rgba(0, 0, 0, 0.4)
+      }
+      .am-modal-wrap {
+        .am-modal {
+          &.am-modal-transparent {
+            width: auto;
+            .am-modal-content {
+              padding-top: 0;
+              border-radius: 24px;
+              .am-modal-close {
+                left: initial;
+                right: 18px;
+              }
+              .am-modal-header {
+                padding: 40px 40px 0px 40px;
+                .am-modal-title {
+                  font-size: 32px;
+                  color: #333;
+                }
+              }
+              .am-modal-body {
+                max-width: 600px;
+                min-width: 400px;
+                padding: 40px;
+                font-size: 28px;
+                color: #333;
+              }
+              .am-modal-footer {
+                .am-modal-button-group-h {
+                  .am-modal-button {
+                    height: 98px;
+                    line-height: 98px;
+                    font-size: 32px;
+                    color: #3eb1fa;
+                  }
+                }
+                .am-modal-button-group-v {
+                  .am-modal-button {
+                    border-top: 1px solid #e6e6e6;
+                    height: 98px;
+                    line-height: 98px;
+                    font-size: 32px;
+                    color: #3eb1fa;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  /* 列表 */
+  .list {
+    :global {
+      .am-list-item.am-input-item {
+        height: 98px;
+      }
+      .am-list-item .am-input-label {
+        font-size: 32px;
+      }
+      .am-list-item .am-list-line {
+        height: 100px;
+      }
+    }
+  }
+}
