@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "description": "项目构建cli",
   "main": "index.js",
+  "repository": "WangXueZhi/rayx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
