@@ -1,27 +1,71 @@
-# 快速生成webpack+react项目
+# rayx
+webpack+react项目工程化CLI工具，为了提高开发效率和开发体验，避免繁琐的操作，规范项目结构和文档。
 
-## 安装
+# 安装
 ```
 npm install rayx -g
 ```
 
-## 创建项目
+## v2.2.0+ 重写命令
+
+#### 创建项目
+```node
+rayx c 项目名/项目描述
 ```
-rayx -c 项目名/项目描述
+```node
+rayx create 项目名/项目描述
 ```
 
-## 创建入口
+#### entry操作
+
+新增
+```node
+rayx entry --add 入口名/页面标题
 ```
-rayx --entry 入口名/页面标题
+```node
+rayx entry -A 入口名/页面标题
+```
+移除
+```node
+rayx entry --delete 入口名
+```
+```node
+rayx entry -D 入口名
 ```
 
-## 创建组件
+
+#### component操作
+
+新增
+```node
+rayx component --add 组件名/组件描述
 ```
-rayx --components 组件名/组件描述
+```node
+rayx component -A 组件名/组件描述
 ```
+移除
+```node
+rayx component --delete 组件名
+```
+```node
+rayx component -D 组件名
+```
+
+#### md 文档操作 （v2.1.0+）
+
+```node
+rayx md --update
+```
+```node
+rayx md -U
+```
+
+1. 之前没有md文档的可以用这个生成文档
+2. 文档根据目录内容生成
+3. v2.1.0之后点的版本，对入口和组件的操作会同步更新文档
 
 ## 生成目录结构说明
-```
+```node
 project
 │   README.md
 │   .babelrc     // babel配置文件

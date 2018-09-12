@@ -65,7 +65,6 @@ let config = webpackCfg.getConfig({
       },
       // 指定目录启用 CSS Modules
       include: [
-        componentPath,
         entryPath
       ],
       use: [
@@ -97,7 +96,6 @@ let config = webpackCfg.getConfig({
       },
       // 非指定目录正常处理
       exclude: [
-        componentPath,
         entryPath
       ],
       use: [

@@ -1,20 +1,31 @@
 {
   "name": "rayx",
-  "version": "2.0.3",
+  "version": "2.2.2",
   "description": "项目构建cli",
   "main": "index.js",
-  "repository": "WangXueZhi/rayx",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "wangxuezhi",
-  "license": "ISC",
   "bin": {
     "rayx": "./bin/rayx.js"
   },
+  "bugs": {
+    "url": "https://github.com/WangXueZhi/rayx/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.18.0",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.3",
     "gulp-replace": "^1.0.0"
+  },
+  "deprecated": false,
+  "homepage": "https://github.com/WangXueZhi/rayx#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WangXueZhi/rayx.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

@@ -1,2 +1,2 @@
-import PositionPicker from './PositionPicker';
-export default PositionPicker;
+import App from './App';
+export default App;
