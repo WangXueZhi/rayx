@@ -33,7 +33,7 @@ var createProject = function (value) {
         .pipe(gulp.dest(`${cwdPath}`))
         .on("end", () => {
             log.success(`项目：${projectDisc} --创建完毕`);
-            markdown.init();
+            markdown.update();
         });
 
     // 复制隐藏文件
