@@ -10,6 +10,7 @@ const markdown = require("./markdown.js");
 var program = require('commander');
 const log = require("./log.js");
 const util = require("./util.js");
+const api = require("./api.js");
 
 /**
  * 创建项目
@@ -93,9 +94,16 @@ var deleteEntry = function (value) {
 
     if (fs.statSync(entryDirPath).isDirectory()) { // recurse
         util.rmdirSync(entryDirPath);
-        fs.unlinkSync(`${cwdPath}/src/pages/${value}.html`);
-        log.success(`entrys：${value} --删除完毕`);
+
+        // 移除html文件
+        const htmlPath = `${cwdPath}/src/pages/${value}.html`;
+        if (fs.existsSync(htmlPath)) {
+            fs.unlinkSync(htmlPath);
+        }
+
+        // 修改文档
         markdown.delete("entrys", [{ name: value }]);
+        log.success(`entrys：${value} --删除完毕`);
     } else {
         log.error("该入口不存在");
     }
@@ -212,6 +220,22 @@ program
         }
         if (options.U) {
             markdown.update();
+        }
+    });
+
+program
+    .command('api')
+    .description('生成api接口文件')
+    .action(function () {
+        // api.json文件路径
+        const apiJsonFilePath = `${cwdPath}/api.json`;
+        // src/api/ 路径
+        const apiDirPath = `${cwdPath}/src/api/`;
+        if (fs.existsSync(apiJsonFilePath)){
+            const apiJson = require(apiJsonFilePath);
+            api.build(apiDirPath, apiJson);
+        } else {
+            log.error("api.json文件不存在");
         }
     });
 
