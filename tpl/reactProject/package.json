@@ -11,7 +11,7 @@
   },
   "assetExtractCss": true,
   "dependencies": {
-    "antd-mobile": "^2.1.8",
+    "axios": "^0.18.0",
     "babel-polyfill": "^6.20.0",
     "babel-runtime": "6.x",
     "classnames": "^2.2.5",

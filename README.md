@@ -65,12 +65,39 @@ rayx md -U
 3. v2.1.0之后点的版本，对入口和组件的操作会同步更新文档
 
 #### api生成器 （v2.3.0+）
+
+生成api
+
 ```node
 rayx api
 ```
 
+例子
+
+```javascript
+import { query_info } from "api/query/info";
+import { query_info_rest } from "api/query/restinfo";
+
+// 正常请求
+query_info({
+    id: 123
+}).then((res)=>{
+
+})
+
+// REST-FULL 风格接口
+// api/query/{id}/info
+// api/query/123/info
+query_info_rest({
+    "{id}": 123
+}).then((res)=>{
+
+})
+```
+
 1. 项目目录下必须有api.json文件
-2. api.json文件由后端生成
+2. api.json文件由后端生成提供
+3. 请求使用axios
 
 ## 生成目录结构说明
 ```node
