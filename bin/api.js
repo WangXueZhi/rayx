@@ -89,10 +89,6 @@ api.buildOne = function (data) {
     }
     const API_ANNOTATION = api_annotation_head + api_annotation_body + api_annotation_foot;
 
-    log.info("api名称: " + API_NAME)
-    log.info("api描述: " + API_dESCRIBE)
-    log.info("api地址: " + API_URL)
-
     // 命名接口文件名称
     let apiFileName = `${urlArr[urlArr.length - 2]}.js`;
     if (apiFileName.indexOf("{") >= 0) {
@@ -107,10 +103,10 @@ api.buildOne = function (data) {
     if (fs.existsSync(targetApiFilePath)) {
         // 读取目标文件内容
         let targetFileContent = fs.readFileSync(targetApiFilePath, 'utf-8');
-
+        
         // 检查目标文件内是否已有该接口
         if (targetFileContent.indexOf(`export function ${API_NAME}(`) >= 0) {
-            log.error("这个api已存在...下一个")
+            // log.error("这个api已存在...下一个")
             api.buildNext();
             return;
         }
@@ -123,6 +119,10 @@ api.buildOne = function (data) {
             .replace(/__url__/g, API_URL)
             .replace(/__method__/g, API_METHOD)
             .replace(/__headers__/g, API_HEADERS);
+
+        log.info("api名称: " + API_NAME)
+        log.info("api描述: " + API_dESCRIBE)
+        log.info("api地址: " + API_URL)
 
         // 写入新内容
         try {
