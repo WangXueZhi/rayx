@@ -44,8 +44,9 @@ let config = webpackCfg.getConfig({
   },
   // 模块索引规则
   resolve: {
-    extensions: ['.jsx', '.web.js', '.js'],
+    extensions: ['.jsx', '.js'],
     alias: {
+      api: path.join(srcPath, 'api'),
       commons: path.join(srcPath, 'commons'),
       components: path.join(srcPath, 'components'),
       images: path.join(srcPath, 'images'),

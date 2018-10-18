@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from 'commons/config';
-import Toast from 'frag/react/Toast';
+import qs from "qs";
 
 // 请求超时
 const TIMEOUT = 10000;
@@ -24,32 +24,19 @@ const _fetch = axios.create({
 
 // 请求拦截器
 _fetch.interceptors.request.use(function (config) {
-    let data = config.data;
-    
     // REST风格接口
-    for (let key in data) {
+    for (let key in config.data) {
         if (key.indexOf("{") == 0) {
-            config.url = config.url.replace(key, data[key]);
+            config.url = config.url.replace(key, config.data[key]);
             delete config.data[key];
         }
     }
 
+    config.data = qs.stringify(config.data);
+
     // get传参
-    if (config.method == "get") {
-        let queryStringArr = [];
-        for (let key in data) {
-            if (key.indexOf("{") != 0) {
-                let value = data[key];
-                if (typeof (value) === 'undefined') {
-                    value = '';
-                }
-                value = encodeURIComponent(value);
-                queryStringArr.push(key + '=' + value);
-            }
-        }
-        if(queryStringArr.length > 0){
-            config.url += `?${queryStringArr.join("&")}`
-        }
+    if (config.method == "get" && config.data && typeof config.data == "string") {
+        config.url += `?${config.data}`
     }
 
     // 请求锁, 
@@ -87,10 +74,12 @@ _fetch.interceptors.response.use(function (res) {
     // 处理异常
     const data = res.data
     const code = +data.code
+    // 约定code=0即为成功
     if (code === 0) {
         return data;
     } else {
-        Toast.info(data.message, 1500);
+        // 打印错误信息
+        console.log(data.message);
         return Promise.reject(data);
     }
 }, function (error) {
