@@ -1,6 +1,6 @@
 {
   "name": "rayx",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "项目构建cli",
   "main": "index.js",
   "author": "wangxuezhi",
