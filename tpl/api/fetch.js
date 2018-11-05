@@ -32,7 +32,7 @@ _fetch.interceptors.request.use(function (config) {
         }
     }
 
-    config.data = qs.stringify(config.data);
+    config.data = qs.stringify(Object.assign({_stamp: (new Date()).getTime()},config.data));
 
     // get传参
     if (config.method == "get" && config.data && typeof config.data == "string") {
