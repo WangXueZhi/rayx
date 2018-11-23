@@ -32,11 +32,11 @@ _fetch.interceptors.request.use(function (config) {
         }
     }
 
-    config.data = qs.stringify(Object.assign({_stamp: (new Date()).getTime()},config.data));
+    config.data = Object.assign({ _stamp: (new Date()).getTime() }, config.data);
 
     // get传参
-    if (config.method == "get" && config.data && typeof config.data == "string") {
-        config.url += `?${config.data}`
+    if (config.method == "get" && config.data) {
+        config.url += `?${qs.stringify(config.data)}`
     }
 
     // 请求锁, 
