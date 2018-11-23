@@ -19,8 +19,6 @@
     "core-js": "^2.4.1",
     "exif-js": "^2.3.0",
     "lrz": "^4.9.40",
-    "natty-fetch": "latest",
-    "natty-storage": "latest",
     "normalize.css": "~4.2.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

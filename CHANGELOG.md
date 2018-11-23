@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v2.3.8] 2018.11.23
+- 去掉natty系列http库，去掉sources目录
+
 ## [v2.3.7] 2018.11.23
 - 修复fetch.js中，post请求的bug
 
