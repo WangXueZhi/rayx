@@ -114,6 +114,14 @@ markdown.delete = function (type, options) {
  */
 markdown.creatConfigByType = function (type) {
     let typesPath = `${cwdPath}/src/${type}/`;
+    
+    // 如果目录不存在，先创建
+    let stat = fs.statSync(typesPath);
+    if (!stat.isDirectory()) {
+        fs.mkdirSync(typesPath);
+    }
+
+    // 获取目录中的目录列表
     let dirList = util.dirListInDir(typesPath);
 
     // 如果md配置文件不存在，先创建

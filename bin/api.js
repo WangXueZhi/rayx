@@ -15,6 +15,10 @@ let apisIndex = 0;
 let apisArr = [];
 // 创建api文件的目标目录
 let buildPath = "";
+// api数据
+let apiDatas = {};
+// 是否覆盖
+let isOverride = false;
 
 let api = {};
 
@@ -23,9 +27,16 @@ let api = {};
  * @param {String} dir 创建目录
  * @param {Object} data api数据
  */
-api.build = (dir, data) => {
+api.build = (dir, data, override) => {
     let { ...newData } = data;
+    apiDatas = data; // 缓存到全局
+    isOverride = override;
     buildPath = dir;
+
+    // 如果覆盖，先清除源目录
+    if(override){
+        api.clean(dir);
+    }
 
     // 如果fetch基础文件不存在，创建一个
     if (!fs.existsSync(`${buildPath}fetch.js`)) {
@@ -70,11 +81,24 @@ api.buildOne = function (data) {
     // 接口注释处理
     let paramsArr = [];
     for (let param in data.parameters) {
-        paramsArr.push({
-            name: param,
-            info: data.parameters[param]
-        });
+        if (API_METHOD == `"GET"`) {
+            paramsArr.push({
+                name: param,
+                info: data.parameters[param]
+            });
+        } else if (API_METHOD == `"POST"`) {
+            if (apiDatas.types[data.parameters[param].type]) {
+                let properties = apiDatas.types[data.parameters[param].type].properties;
+                for (prop in properties) {
+                    paramsArr.push({
+                        name: prop,
+                        info: properties[prop]
+                    });
+                }
+            }
+        }
     }
+
     let api_annotation_head = "/**";
     let api_annotation_body = `\n * ${API_dESCRIBE}`;
     let api_annotation_foot = "\n */";
@@ -99,11 +123,11 @@ api.buildOne = function (data) {
     let targetApiFilePath = `${apiPath}${apiFileName}`;
     // 模板文件路径
     let tplApiFilePath = `${TPL_API_PATH}/demo.js`;
-    // 如果目标文件已存在
+    // 如果目标文件已存在 并且不要覆盖
     if (fs.existsSync(targetApiFilePath)) {
         // 读取目标文件内容
         let targetFileContent = fs.readFileSync(targetApiFilePath, 'utf-8');
-        
+
         // 检查目标文件内是否已有该接口
         if (targetFileContent.indexOf(`export function ${API_NAME}(`) >= 0) {
             // log.error("这个api已存在...下一个")
@@ -157,7 +181,6 @@ api.buildOne = function (data) {
  * 生成下一个api接口
  */
 api.buildNext = function () {
-
     apisIndex++;
     if (apisArr[apisIndex]) {
         api.buildOne(apisArr[apisIndex]);
@@ -165,5 +188,22 @@ api.buildNext = function () {
         log.success("api创建结束");
     }
 }
+
+/**
+ * 清除空api，fetch.js除外
+ */
+api.clean = function (dir) {
+    let fetchContent = "";
+    if (fs.existsSync(`${dir}fetch.js`)) {
+        fetchContent = fs.readFileSync(`${dir}fetch.js`, 'utf-8');
+    }
+    util.rmdirSync(dir);
+    fs.mkdirSync(dir);
+
+    if (fetchContent) {
+        fs.writeFileSync(`${dir}fetch.js`, fetchContent, 'utf8');
+    }
+}
+
 
 module.exports = api;

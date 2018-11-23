@@ -226,14 +226,19 @@ program
 program
     .command('api')
     .description('生成api接口文件')
-    .action(function () {
+    .option("--override, -O", "覆盖")
+    .action(function (options) {
         // api.json文件路径
         const apiJsonFilePath = `${cwdPath}/api.json`;
         // src/api/ 路径
         const apiDirPath = `${cwdPath}/src/api/`;
         if (fs.existsSync(apiJsonFilePath)){
             const apiJson = require(apiJsonFilePath);
-            api.build(apiDirPath, apiJson);
+            if (options.O) {
+                api.build(apiDirPath, apiJson, true);
+            }else{
+                api.build(apiDirPath, apiJson, false);
+            }
         } else {
             log.error("api.json文件不存在");
         }
