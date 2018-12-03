@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v2.3.9] 2018.11.23
+- 修复fetch.js中，请求锁的问题
+
 ## [v2.3.8] 2018.11.23
 - 去掉natty系列http库，去掉sources目录
 

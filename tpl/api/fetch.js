@@ -52,7 +52,7 @@ _fetch.interceptors.request.use(function (config) {
             cancel("cancel");
         } else {
             // 添加入请求队列
-            fetchQueue[config.url] = 1
+            fetchQueue[config.baseURL + config.url] = 1
         }
     }
 
