@@ -72,6 +72,12 @@ rayx md -U
 rayx api
 ```
 
+生成api，覆盖原生成文件，除了fetch.js
+
+```node
+rayx api -O
+```
+
 例子
 
 ```javascript

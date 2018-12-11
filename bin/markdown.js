@@ -116,8 +116,7 @@ markdown.creatConfigByType = function (type) {
     let typesPath = `${cwdPath}/src/${type}/`;
     
     // 如果目录不存在，先创建
-    let stat = fs.statSync(typesPath);
-    if (!stat.isDirectory()) {
+    if(!fs.existsSync(typesPath)){
         fs.mkdirSync(typesPath);
     }
 
