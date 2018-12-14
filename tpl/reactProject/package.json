@@ -43,7 +43,7 @@
     "del": "^2.2.2",
     "file-loader": "^1.1.11",
     "glob": "^7.1.1",
-    "gulp": "latest",
+    "gulp": "^3.9.1",
     "gulp-util": "^3.0.8",
     "html-loader": "^0.4.4",
     "html-webpack-event-plugin": "^0.1.1",
