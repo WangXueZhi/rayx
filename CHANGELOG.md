@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v2.3.12] 2019.2.13
+- 如果api.json中未指定Content-Type的post请求，则通过url传参
+
 ## [v2.3.10] 2018.12.11
 - 修复创建项目src中缺少components目录导致创建文档失败的bug
 
