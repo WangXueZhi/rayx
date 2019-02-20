@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.0.0] 2019.2.20
+- 创建项目的react依赖升级到16.8.2，并升级对应react-dom，react-redux
+
 ## [v2.3.12] 2019.2.13
 - 如果api.json中未指定Content-Type的post请求，则通过url传参
 
