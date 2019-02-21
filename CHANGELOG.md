@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.0.1] 2019.2.20
+- 修复 api命令 接口直接在根目录下的情况下，会直接生成undefined.js，不友好，改成了other.js
+
 ## [v3.0.0] 2019.2.20
 - 创建项目的react依赖升级到16.8.2，并升级对应react-dom，react-redux
 

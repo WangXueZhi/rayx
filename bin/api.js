@@ -34,7 +34,7 @@ api.build = (dir, data, override) => {
     buildPath = dir;
 
     // 如果覆盖，先清除源目录
-    if(override){
+    if (override) {
         api.clean(dir);
     }
 
@@ -114,7 +114,7 @@ api.buildOne = function (data) {
     const API_ANNOTATION = api_annotation_head + api_annotation_body + api_annotation_foot;
 
     // 命名接口文件名称
-    let apiFileName = `${urlArr[urlArr.length - 2]}.js`;
+    let apiFileName = `${urlArr[urlArr.length - 2] || "other"}.js`;
     if (apiFileName.indexOf("{") >= 0) {
         apiFileName = `${urlArr[urlArr.length - 1]}.js`;
     }
