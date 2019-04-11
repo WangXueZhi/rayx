@@ -1,6 +1,6 @@
 # __description__
 
-webpack4 + react15 + redux3
+webpack4 + react16 + redux3
 
 ## 页面列表 __entrys__
 
