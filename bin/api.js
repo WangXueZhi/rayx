@@ -7,6 +7,14 @@ const replace = require('gulp-replace');
 const rename = require("gulp-rename");
 const log = require("./log.js");
 
+// java返回类型枚举
+const RESPONSE_TYPE = {
+    "java.lang.Void": null,
+    "java.lang.Integer": "整数",
+    "java.lang.String": "字符串",
+    "java.lang.Boolean": "布尔值"
+}
+
 // api模板路径
 const TPL_API_PATH = path.resolve(__dirname, "../tpl/api");
 // api列表索引
@@ -19,13 +27,27 @@ let buildPath = "";
 let apiDatas = {};
 // 是否覆盖
 let isOverride = false;
+// api 类型
+let apiType = "web"; 
 
 let api = {};
+
+/**
+ * 生成适用于微信的api接口
+ * @param {String} dir 创建目录
+ * @param {Object} data api数据
+ * @param {Boolean} override 是否重新生成，会先清空原来生成的文件
+ */
+api.buildWXA = (dir, data, override) => {
+    apiType = "wxa";
+    api.build(dir, data, override);
+}
 
 /**
  * 生成api接口
  * @param {String} dir 创建目录
  * @param {Object} data api数据
+ * @param {Boolean} override 是否重新生成，会先清空原来生成的文件
  */
 api.build = (dir, data, override) => {
     let { ...newData } = data;
@@ -39,7 +61,7 @@ api.build = (dir, data, override) => {
     }
 
     // 如果fetch基础文件不存在，创建一个
-    if (!fs.existsSync(`${buildPath}fetch.js`)) {
+    if (apiType=="web" && !fs.existsSync(`${buildPath}fetch.js`)) {
         gulp.src(`${TPL_API_PATH}/fetch.js`)
             .pipe(gulp.dest(buildPath));
     }
@@ -122,14 +144,22 @@ api.buildOne = function (data) {
     // 目标文件路径
     let targetApiFilePath = `${apiPath}${apiFileName}`;
     // 模板文件路径
-    let tplApiFilePath = `${TPL_API_PATH}/demo.js`;
+    let tplApiFilePath = `${TPL_API_PATH}/${apiType=="wxa"?"wxa":"demo"}.js`;
     // 如果目标文件已存在 并且不要覆盖
     if (fs.existsSync(targetApiFilePath)) {
         // 读取目标文件内容
         let targetFileContent = fs.readFileSync(targetApiFilePath, 'utf-8');
 
+
         // 检查目标文件内是否已有该接口
-        if (targetFileContent.indexOf(`export function ${API_NAME}(`) >= 0) {
+        let matchText = "";
+        if(apiType=="web"){
+            matchText = `export function ${API_NAME}(`;
+        }
+        if(apiType=="wxa"){
+            matchText = `exports.${API_NAME} = function (options) {`;
+        }
+        if (targetFileContent.indexOf(matchText) >= 0) {
             // log.error("这个api已存在...下一个")
             api.buildNext();
             return;
@@ -170,7 +200,14 @@ api.buildOne = function (data) {
             .on("end", () => {
                 // 读取目标文件内容
                 let targetFileContent = fs.readFileSync(targetApiFilePath, 'utf-8');
-                fs.writeFileSync(targetApiFilePath, `import _fetch from "api/fetch";\n${targetFileContent}`, 'utf8');
+                
+                if(apiType=="web"){
+                    fs.writeFileSync(targetApiFilePath, `import _fetch from "api/fetch";\n${targetFileContent}`, 'utf8');
+                }
+                if(apiType=="wxa"){
+                    fs.writeFileSync(targetApiFilePath, `const network = getApp().globalData.network;\n${targetFileContent}`, 'utf8');
+                }
+                
                 log.success(`api ${API_NAME} 创建成功`);
                 api.buildNext();
             });
@@ -204,6 +241,5 @@ api.clean = function (dir) {
         fs.writeFileSync(`${dir}fetch.js`, fetchContent, 'utf8');
     }
 }
-
 
 module.exports = api;

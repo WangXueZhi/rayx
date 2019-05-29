@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## [v3.0.4] 2019.3.13
+- api支持生成适用于微信小程序的api方法，并且新增支持生成到指定路径, --wxa 指明征程微信小程序的api， ./src/api/ 指定生成路径。
+```node
+rayx api --wxa ./src/api/
+```
+- 需要注意：因为本工具给微信生成的api会从app.globalData里引用network对象去发送请求，而network对象是对微信自带wx.request的一种封装，所以：1. 需要开发者自行封装出一个network，并放在app.globalData里；2. 直接将getApp().globalData.network改成wx，使用微信自带的wx.request。
+```javascript
+//app.js 中装载network，network需要开发者自己封装
+const network = require("./utils/network");
+App(
+{
+  onLaunch: function () {},
+  globalData: {
+    network: network
+  }
+})
+
+// 生成的api代码
+const network = getApp().globalData.network;// 此处可以改成 const network = wx，就不需要封装network了
+exports.authorize = function () {
+  const {data, header, ...rest} = options; 
+  return network.request({
+    method: "POST",
+    url: "xxx/authorize",
+    data: data || {},
+    header: header || {},
+    ...rest
+  })
+}
+```
+
 ## [v3.0.2] 2019.3.13
 - 生成项目中文档里增加rayx操作文档的链接
 

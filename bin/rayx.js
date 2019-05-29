@@ -224,20 +224,24 @@ program
     });
 
 program
-    .command('api')
+    .command('api [dir]>')
     .description('生成api接口文件')
     .option("--override, -O", "覆盖")
-    .action(function (options) {
+    .option("--wxa", "小程序")
+    .action(function (dir, cmd) {
         // api.json文件路径
         const apiJsonFilePath = `${cwdPath}/api.json`;
         // src/api/ 路径
-        const apiDirPath = `${cwdPath}/src/api/`;
-        if (fs.existsSync(apiJsonFilePath)){
+        const apiDirPath = dir && typeof dir == "string" ? `${path.resolve(cwdPath, dir)}/` : `${cwdPath}/src/api/`;
+        // 是否全部重新生成
+        const isOverride = cmd && !!cmd.O;
+        if (fs.existsSync(apiJsonFilePath)) {
             const apiJson = require(apiJsonFilePath);
-            if (options.O) {
-                api.build(apiDirPath, apiJson, true);
-            }else{
-                api.build(apiDirPath, apiJson, false);
+            
+            if (cmd && cmd.wxa) {
+                api.buildWXA(apiDirPath, apiJson, isOverride);
+            } else {
+                api.build(apiDirPath, apiJson, isOverride);
             }
         } else {
             log.error("api.json文件不存在");
