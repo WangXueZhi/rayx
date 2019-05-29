@@ -1,5 +1,5 @@
 # rayx
-快速开始你的react项目，webpack+react项目工程化CLI工具，为了提高开发效率和开发体验，避免繁琐的操作，规范项目结构和文档。
+快速开始你的react项目，webpack+react项目工程化CLI工具集，为了提高开发效率和开发体验，避免繁琐的操作，规范项目结构和文档。
 
 # 安装
 ```
@@ -76,6 +76,18 @@ rayx api
 
 ```node
 rayx api -O
+```
+
+生成适用于微信小程序的api
+
+```node
+rayx api --wxa
+```
+
+生成到指定目录
+
+```node
+rayx api ./src/api
 ```
 
 例子
