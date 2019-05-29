@@ -5,6 +5,8 @@
 ```
 npm install rayx -g
 ```
+文档：[v2](https://github.com/WangXueZhi/rayx/tree/v2),
+[v3](https://github.com/WangXueZhi/rayx/tree/v3)
 
 ## v2.2.0+ 重写命令
 
