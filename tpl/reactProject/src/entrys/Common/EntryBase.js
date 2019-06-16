@@ -1,5 +1,9 @@
 import React from 'react';
 
+// 载入公共样式
+import 'normalize.css/normalize.css';
+import 'styles/base.less';
+
 
 /**
  * ES6 有一个特别规定，就是通过super调用父类的方法时，super会绑定子类的this。

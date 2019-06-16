@@ -28,7 +28,7 @@
     "vconsole": "^2.5.2"
   },
   "devDependencies": {
-    "autoprefixer": "latest",
+    "autoprefixer": "^9.5.1",
     "babel-core": "^6.0.0",
     "babel-loader": "^7.1.5",
     "babel-plugin-import": "^1.2.1",
