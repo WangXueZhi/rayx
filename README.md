@@ -68,7 +68,12 @@ rayx md -U
 
 #### api生成器 （v2.3.0+）
 
-生成api
+1. 命令：rayx api [dir] [apiname] [mode]
+2. dir：生成到指定目录，选填，如果想指定json文件源名称，该选项为必填，默认"./src/"
+3. apiname：json文件源名称，选填，默认"api"
+4. mode：模式，选填
+
+生成默认api
 
 ```node
 rayx api

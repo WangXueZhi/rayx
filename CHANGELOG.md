@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.0.7] 2019.7.6
+- api生成的目录名和api文件源名称保持一致，包括生成的导入代码，如：import _fetch from "api文件源名称/fetch";
+
 ## [v3.0.6] 2019.7.6
 - api命令新增可指定api文件源名称，默认是api.json
 
