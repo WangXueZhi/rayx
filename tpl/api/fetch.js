@@ -39,9 +39,9 @@ _fetch.interceptors.request.use(function (config) {
         config.url += `?${qs.stringify(config.data)}`
     }
 
-    // post 未指定Content-Type，则通过url传参
-    if (config.method == "post" && !config.headers["Content-Type"]) {
-        config.url += `?${qs.stringify(config.data)}`
+    // post 并且不是预请求
+    if (config.method == "post" && (config.headers["Content-Type"] != "application/json")) {
+        config.data = qs.stringify(config.data);
     }
 
     // 请求锁, 

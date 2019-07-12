@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.0.8] 2019.7.12
+- 修复api生成rest风格接口bug，修复api生成方法名是关键字的bug，修复api生成参数注释不全的bug，增加api生成接口返回注释
+
 ## [v3.0.7] 2019.7.6
 - api生成的目录名和api文件源名称保持一致，包括生成的导入代码，如：import _fetch from "api文件源名称/fetch";
 

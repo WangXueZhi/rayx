@@ -224,11 +224,11 @@ program
     });
 
 program
-    .command('api [dir] [apiname]>')
+    .command('api [apiname] [dir]>')
     .description('生成api接口文件')
     .option("--override, -O", "覆盖")
     .option("--wxa", "小程序")
-    .action(function (dir, name, options) {
+    .action(function (name, dir, options) {
         const apiName = name || "api";
         // api.json文件路径
         const apiJsonFilePath = `${cwdPath}/${apiName}.json`;

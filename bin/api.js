@@ -31,6 +31,14 @@ let isOverride = false;
 let apiType = "web";
 // api包名称
 let apiPackageName = "api";
+// js关键字
+let keywords = ["abstract", "arguments", "boolean", "break", "byte", "case", "catch", "char",
+    "class", "const", "continue", "debugger", "default", "delete", "do", "double", "else", "enum",
+    "eval", "export", "extends", "false", "final", "finally", "float", "for", "function", "goto",
+    "if", "implements", "import", "in", "instanceof", "int", "interface", "let", "long", "native",
+    "new", "null", "package", "private", "protected", "public", "return", "short", "static", "super",
+    "switch", "synchronized", "this", "throw", "throws", "transient", "true", "try", "typeof", "var",
+    "void", "volatile", "while", "with", "yield"]
 
 let api = {};
 
@@ -84,16 +92,39 @@ api.build = (dir, apiName, data, override) => {
  * @param {Object} data 指定的一个api数据
  */
 api.buildOne = function (data) {
+    // 如果没有responses字段，就不创建当前api
+    if (!data.responses) {
+        api.buildNext();
+        return;
+    }
+
+    // 处理url数据
     let urlArr = util.cleanEmptyInArray(data.url.split("/"));
     let apiPath = buildPath;
 
+    // 清理出rest参数位置，因为参数对拼接路径没用
+    for (let i = 0; i < urlArr.length; i++) {
+        if (urlArr[i].indexOf("{") >= 0) {
+            urlArr.splice(i, 1);
+        }
+    }
+
+    // 拼接出文件路径
     for (let i = 0; i < urlArr.length - 2; i++) {
         apiPath += `${urlArr[i]}/`;
     }
 
-    const API_NAME = urlArr[urlArr.length - 1];
+    // 创建api方法名
+    let apiFunName = urlArr[urlArr.length - 1];
+    if (urlArr[urlArr.length - 1].indexOf(".") >= 0) {
+        let nameArr = urlArr[urlArr.length - 1].split(".");
+        nameArr.splice(-1, 1);
+        apiFunName = nameArr.join(".");
+    }
+
+    const API_NAME = keywords.includes(apiFunName) ? `_${apiFunName}` : apiFunName;
     const API_dESCRIBE = data.summary;
-    const API_URL = `"${urlArr.join("/")}"`;
+    const API_URL = `"${util.cleanEmptyInArray(data.url.split("/")).join("/")}"`;
     const API_METHOD = `"${data.method || "POST"}"`;
 
     // headers 处理
@@ -106,22 +137,40 @@ api.buildOne = function (data) {
     const API_HEADERS = api_headers_head + api_headers_body + api_headers_foot;
 
     // 接口注释处理
+    // 接口参数
     let paramsArr = [];
     for (let param in data.parameters) {
-        if (API_METHOD == `"GET"`) {
+        // 处理基本数据类型的参数
+        if (data.parameters[param].type.indexOf("java.lang.") == 0) {
             paramsArr.push({
                 name: param,
                 info: data.parameters[param]
             });
-        } else if (API_METHOD == `"POST"`) {
-            if (apiDatas.types[data.parameters[param].type]) {
-                let properties = apiDatas.types[data.parameters[param].type].properties;
-                for (prop in properties) {
-                    paramsArr.push({
-                        name: prop,
-                        info: properties[prop]
-                    });
-                }
+        } else {
+            // 处理复杂数据类型的参数
+            let properties = apiDatas.types[data.parameters[param].type].properties;
+            for (let prop in properties) {
+                paramsArr.push({
+                    name: prop,
+                    info: properties[prop]
+                });
+            }
+        }
+    }
+    // 接口返回
+    let responsesArr = [];
+    if (data.responses[0].type.indexOf("<") >= 0) {
+        const responseType = data.responses[0].type.split("<")[1].split("[]")[0];
+        if (apiDatas.types[responseType]) {
+            console.log(data)
+            const responsesProperties = apiDatas.types[responseType].properties;
+            console.log(responsesProperties)
+            for (let responsesPropertiesItem in responsesProperties) {
+                console.log(responsesPropertiesItem)
+                responsesArr.push({
+                    name: responsesPropertiesItem,
+                    info: responsesProperties[responsesPropertiesItem]
+                });
             }
         }
     }
@@ -138,13 +187,20 @@ api.buildOne = function (data) {
         }
         api_annotation_body += `\n * }`;
     }
+
+    // 如果有请求参数
+    if (responsesArr.length > 0) {
+        api_annotation_body += `\n * @responses { Object } 返回参数`;
+        api_annotation_body += `\n * {`;
+        for (let i = 0; i < responsesArr.length; i++) {
+            api_annotation_body += `\n *   ${responsesArr[i].name} ${responsesArr[i].info.summary}`;
+        }
+        api_annotation_body += `\n * }`;
+    }
     const API_ANNOTATION = api_annotation_head + api_annotation_body + api_annotation_foot;
 
     // 命名接口文件名称
     let apiFileName = `${urlArr[urlArr.length - 2] || "other"}.js`;
-    if (apiFileName.indexOf("{") >= 0) {
-        apiFileName = `${urlArr[urlArr.length - 1]}.js`;
-    }
 
     // 目标文件路径
     let targetApiFilePath = `${apiPath}${apiFileName}`;
