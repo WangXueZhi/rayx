@@ -1,26 +1,26 @@
-let webpackCfg = require("webpack-config");
-let pkg = require('./package.json');
+const webpackCfg = require("rayx-webpack-config");
+const pkg = require('./package.json');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-let path = require('path');
+const path = require('path');
 
 // 路径
-let srcPath = path.join(__dirname, './src')
-let entryPath = path.join(srcPath, 'entrys'); // 入口脚本路径
-let componentPath = path.join(srcPath, 'components'); // 业务组件路径
+const srcPath = path.join(__dirname, './src')
+const entryPath = path.join(srcPath, 'entrys'); // 入口脚本路径
+const componentPath = path.join(srcPath, 'components'); // 业务组件路径
 
 // 覆盖 antd-mobile 的变量
-let antdModify = require(path.join(srcPath, 'styles', 'antdModify'));
+const antdModify = require(path.join(srcPath, 'styles', 'antdModify'));
 
 // 环境域名
-let __URL_HOST__ = process.env.GULP_ENV === "prod" ? "" : "";
+const __URL_HOST__ = process.env.GULP_ENV === "prod" ? "" : "";
 
 // mini-css-extract-plugin 配置
-let cssExtractLoader = pkg.assetExtractCss ? MiniCssExtractPlugin.loader : {
+const cssExtractLoader = pkg.assetExtractCss ? MiniCssExtractPlugin.loader : {
   loader: 'style-loader'
 };
 
 
-let config = webpackCfg.getConfig({
+const config = webpackCfg.getConfig({
   // 版本号，默认1.0.0
   version: pkg.version,
   // 环境变量：dev,test,prod。默认test

@@ -148,7 +148,8 @@ api.buildOne = function (data) {
             });
         } else {
             // 处理复杂数据类型的参数
-            let properties = apiDatas.types[data.parameters[param].type].properties;
+            const realType = data.parameters[param].type.split("[]")[0];
+            let properties = apiDatas.types[realType].properties;
             for (let prop in properties) {
                 paramsArr.push({
                     name: prop,
@@ -162,11 +163,8 @@ api.buildOne = function (data) {
     if (data.responses[0].type.indexOf("<") >= 0) {
         const responseType = data.responses[0].type.split("<")[1].split("[]")[0];
         if (apiDatas.types[responseType]) {
-            console.log(data)
             const responsesProperties = apiDatas.types[responseType].properties;
-            console.log(responsesProperties)
             for (let responsesPropertiesItem in responsesProperties) {
-                console.log(responsesPropertiesItem)
                 responsesArr.push({
                     name: responsesPropertiesItem,
                     info: responsesProperties[responsesPropertiesItem]

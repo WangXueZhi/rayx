@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.0.9] 2019.8.21
+- 1. 修复api生成中入参数据类型为数组的bug，2. api生成工具已经剥离到[rayx-api](https://www.npmjs.com/package/rayx-api)
+
 ## [v3.0.8] 2019.7.12
 - 修复api生成rest风格接口bug，修复api生成方法名是关键字的bug，修复api生成参数注释不全的bug，增加api生成接口返回注释，调换api命令参数，第一个为api文件名，第二个为api生成目录，默认为./src
 
